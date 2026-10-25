@@ -8,5 +8,8 @@ class Product:
     def update_stock(self,quantity):
         self.__stock = quantity
 
+    def get_product_id(self):
+        return self.__product_id
+
     def display_information(self):
         print (f" Product ID: {self.__product_id} \n Product Name: {self.__name} \n Price: {self.__price} \n Stock: {self.__stock}")
