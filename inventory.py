@@ -20,3 +20,9 @@ class Inventory:
                 product.display_information()
                 return product
         print(f"Product with ID {id} not found.")
+
+    def get_all_products_dict(self):
+        product_list = []
+        for product in self.__products:
+            product_list.append(product.to_dict())
+        return product_list
