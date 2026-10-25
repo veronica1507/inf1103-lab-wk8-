@@ -54,7 +54,8 @@ while option != 6:
         stock = int(input("Enter the stock quantity of the product: "))
         item = Product(id,name,price,stock)
         my_inventory.add_product(item)
-    
+        print("Added product to inventory!")
+        
     elif option == 3:
         id = input("Enter Product ID: ")
         product_obj = my_inventory.search_product(id)
@@ -75,10 +76,11 @@ while option != 6:
     else:
         print("Invalid option, Please choose between 1 and 6.")
     
-    option = int(input("Enter Option: ")) 
     print()
     menu()
+    option = int(input("Enter Option: ")) 
     
+
 print("Saving inventory before exit....")
 save_inventory(my_inventory)
 print("Thank You for using Inventory Management System")
