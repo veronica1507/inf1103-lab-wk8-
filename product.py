@@ -13,3 +13,11 @@ class Product:
 
     def display_information(self):
         print (f" Product ID: {self.__product_id} \n Product Name: {self.__name} \n Price: {self.__price} \n Stock: {self.__stock}")
+
+    def to_dict(self):
+        return {
+            "product_id": self.__product_id,
+            "name": self.__name,
+            "price": self.__price,
+            "stock": self.__stock
+        }
