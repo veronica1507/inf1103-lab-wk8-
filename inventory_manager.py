@@ -79,7 +79,7 @@ while option != 6:
     print()
     menu()
     option = int(input("Enter Option: ")) 
-    
+    print()
 
 print("Saving inventory before exit....")
 save_inventory(my_inventory)
