@@ -6,7 +6,7 @@ class Inventory:
 
     def add_product(self,product_obj):
         self.__products.append(product_obj)
-        print("Added product to inventory!")
+        
 
     def display_all (self):
         for product in self.__products:
