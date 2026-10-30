@@ -35,3 +35,13 @@ class PhysicalProduct(Product):
             product = super().to_dict()
             product["weight"] = self.__weight
             return product
+
+class DigitalProduct(Product):
+    def __init__(self,product_id,name,price,stock,download_size):
+        super().__init__(product_id, name,price,stock)
+        self.__download_size = download_size
+
+    def to_dict(self):
+        product = super().to_dict()
+        product["download_size"] = self.__download_size
+        return product

@@ -1,5 +1,5 @@
 import json
-from product import Product , PhysicalProduct
+from product import Product , PhysicalProduct , DigitalProduct
 from inventory import Inventory
 
 
@@ -47,19 +47,23 @@ option = int(input("Enter Option: "))
 while option != 6:
     if option == 1:
         my_inventory.display_all()
-    elif option == 2:
-        product_type = input("Enter the type of product ? (Physical/Digital): ")
-        if product_type == "Physical":
-                    weight = float(input("Enter the weight of the product: "))
-                    
+    elif option == 2:         
         id = input("Enter Product ID: ")
         name = input ("Enter Product Name: ")
         price = float(input("Enter ther price of the product:"))
         stock = int(input("Enter the stock quantity of the product: "))
-        item = PhysicalProduct(id,name,price,stock,weight)  
-        my_inventory.add_product(item)
-        print("Added product to inventory!")
-    
+        product_type = input("Enter the type of product ? (Physical/Digital): ")
+        if product_type == "Physical":
+            weight = float(input("Enter the weight of the product: "))
+            item = PhysicalProduct(id,name,price,stock,weight)
+            my_inventory.add_product(item)
+            print("Added product to inventory!")
+
+        else:
+            size = float(input("Enter the size of the downloadable product in MB: "))
+            item = DigitalProduct(id,name,price,stock,size)
+            my_inventory.add_product(item)          
+        
     elif option == 3:
         id = input("Enter Product ID: ")
         product_obj = my_inventory.search_product(id)
