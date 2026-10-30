@@ -30,3 +30,8 @@ class PhysicalProduct(Product):
     def display_information(self):
         super().display_information()
         print(f"Weight: {self.__weight}kg")
+
+    def to_dict(self):
+            product = super().to_dict()
+            product["weight"] = self.__weight
+            return product

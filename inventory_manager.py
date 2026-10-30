@@ -37,7 +37,7 @@ print()
 raw_data = load_inventory()
 my_inventory = Inventory()
 for item in raw_data:
-    product_obj = Product(item['product_id'], item['name'], item ['price'], item['stock'])
+    product_obj = PhysicalProduct(item['product_id'], item['name'], item ['price'], item['stock'], item['weight'])
     my_inventory.add_product(product_obj)
 
 print()
