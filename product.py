@@ -21,3 +21,13 @@ class Product:
             "price": self.__price,
             "stock": self.__stock
         }
+
+class PhysicalProduct(Product):
+    def __init__(self,product_id,name, price,weight):
+        super().__init__(product_id, name,price)
+        self.__weight = weight
+
+    def display_information(self):
+        super().display_information()
+        print(f"Weight: {self.__weight}kg")
+        
