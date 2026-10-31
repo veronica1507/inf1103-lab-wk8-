@@ -44,6 +44,7 @@ option = int(input("Enter Option: "))
 while option != 6:
     if option == 1:
         my_inventory.display_all()
+
     elif option == 2:         
         id = input("Enter Product ID: ")
         name = input ("Enter Product Name: ")

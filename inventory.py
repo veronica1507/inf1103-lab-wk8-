@@ -10,6 +10,7 @@ class Inventory:
     def display_all (self):
         for product in self.__products:
             product.display_information()
+            product.get_fulfilment_info()
             print("-"*28)
 
     def search_product(self,id):

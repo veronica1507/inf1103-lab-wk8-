@@ -7,7 +7,6 @@ class CanBeShipped(ABC):
 
 
 class Product(ABC):
-    @abstractmethod
     def __init__(self,product_id,name,price,stock):
         self.__product_id = product_id
         self.__name = name
@@ -23,7 +22,8 @@ class Product(ABC):
     def display_information(self):
         print (f" Product ID: {self.__product_id} \n Product Name: {self.__name} \n Price: {self.__price} \n Stock: {self.__stock}")
 
-    def get_fulfilment_info():
+    @abstractmethod
+    def get_fulfilment_info(self):
         pass
     
     def to_dict(self):
@@ -49,7 +49,7 @@ class PhysicalProduct(Product):
             product["weight"] = self.__weight
             return product
 
-    def get_fulfillment_info():
+    def get_fulfilment_info(self):
         print("The product requires shipping.")
 
 class DigitalProduct(Product):
@@ -67,5 +67,5 @@ class DigitalProduct(Product):
         product["download_size"] = self.__download_size
         return product
 
-    def get_fulfilment_info():
-        print("The product will be delivered digitally.")
+    def get_fulfilment_info(self):
+        print("The product is delivered digitally")
