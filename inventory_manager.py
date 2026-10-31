@@ -62,7 +62,8 @@ while option != 6:
         else:
             size = float(input("Enter the size of the downloadable product in MB: "))
             item = DigitalProduct(id,name,price,stock,size)
-            my_inventory.add_product(item)          
+            my_inventory.add_product(item)
+            print("Added product to inventory!")          
         
     elif option == 3:
         id = input("Enter Product ID: ")
