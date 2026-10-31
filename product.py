@@ -26,7 +26,6 @@ class Product(ABC):
     def get_fulfilment_info():
         pass
     
-    
     def to_dict(self):
         return {
             "product_id": self.__product_id,
@@ -46,8 +45,12 @@ class PhysicalProduct(Product):
 
     def to_dict(self):
             product = super().to_dict()
+            product["type"] = "Physical"
             product["weight"] = self.__weight
             return product
+
+    def get_fulfillment_info():
+        print("The product requires shipping.")
 
 class DigitalProduct(Product):
     def __init__(self,product_id,name,price,stock,download_size):
@@ -60,5 +63,9 @@ class DigitalProduct(Product):
    
     def to_dict(self):
         product = super().to_dict()
+        product["type"] = "Digital"
         product["download_size"] = self.__download_size
         return product
+
+    def get_fulfilment_info():
+        print("The product will be delivered digitally.")

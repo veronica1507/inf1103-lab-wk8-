@@ -1,4 +1,4 @@
-from product import Product , PhysicalProduct
+from product import Product , PhysicalProduct , DigitalProduct
 
 class Inventory:
     def __init__(self):
@@ -7,7 +7,6 @@ class Inventory:
     def add_product(self,product_obj):
         self.__products.append(product_obj)
         
-
     def display_all (self):
         for product in self.__products:
             product.display_information()
@@ -20,6 +19,14 @@ class Inventory:
                 product.display_information()
                 return product
         print(f"Product with ID {id} not found.")
+
+    def load_products(self,products):
+        for item in products:
+            if item["type"] == "Physical":
+                self.add_product(PhysicalProduct(item["product_id"], item["name"], item["price"], item["stock"], item["weight"]))
+
+            elif item["type"] == "Digital":
+                self.add_product(DigitalProduct(item["product_id"], item["name"], item["price"], item["stock"], item["download_size"]))
 
     def get_all_products_dict(self):
         product_list = []

@@ -13,15 +13,17 @@ def menu():
     print("6. Exit")
 
 def load_inventory():
+    my_inventory = Inventory()
     try:
         with open('inventory.json', 'r') as file:
            data = json.load(file)
-        print("inventory.json found")
-        print("Inventory loaded successfully")
-        return data
+           print("inventory.json found")
+           my_inventory.load_products(data)
+           print("Inventory loaded successfully")
+
     except FileNotFoundError: 
         print("Warning: inventory.json not found. Returning empty inventory.")
-        return []
+    return my_inventory
 
 def save_inventory(inventory_obj):
     data = inventory_obj.get_all_products_dict()
@@ -34,15 +36,10 @@ print("============================")
 print("INVENTORY MANAGEMENT SYSTEM")
 print("============================")
 print()
-raw_data = load_inventory()
-my_inventory = Inventory()
-for item in raw_data:
-    product_obj = PhysicalProduct(item['product_id'], item['name'], item ['price'], item['stock'], item['weight'])
-    my_inventory.add_product(product_obj)
-
-print()
 menu()
 print()
+
+my_inventory = load_inventory()
 option = int(input("Enter Option: "))
 while option != 6:
     if option == 1:
