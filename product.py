@@ -34,7 +34,7 @@ class Product(ABC):
             "stock": self.__stock
         }
 
-class PhysicalProduct(Product):
+class PhysicalProduct(Product,CanBeShipped):
     def __init__(self,product_id,name,price,stock,weight):
         super().__init__(product_id, name,price,stock)
         self.__weight = weight
@@ -51,6 +51,9 @@ class PhysicalProduct(Product):
 
     def get_fulfilment_info(self):
         print("The product requires shipping.")
+
+    def calculate_shipping_cost(self):
+        return 1.5 * self.__weight
 
 class DigitalProduct(Product):
     def __init__(self,product_id,name,price,stock,download_size):

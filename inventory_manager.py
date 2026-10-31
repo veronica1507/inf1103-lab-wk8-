@@ -54,6 +54,8 @@ while option != 6:
         if product_type == "Physical":
             weight = float(input("Enter the weight of the product: "))
             item = PhysicalProduct(id,name,price,stock,weight)
+            cost = item.calculate_shipping_cost()
+            print(f"Shipping Cost: {cost}")
             my_inventory.add_product(item)
             print("Added product to inventory!")
 
