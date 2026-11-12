@@ -6,5 +6,3 @@ class Supplier:
 
     def display_information(self):
         print (f"Supplier ID: {self.__supplier_id} \n Supplier Name: {self.__name} \n Contact Email: {self.__contact_email}")
-
-        

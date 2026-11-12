@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from supplier import Supplier
 
 class CanBeShipped(ABC):
     @abstractmethod
@@ -7,11 +8,12 @@ class CanBeShipped(ABC):
 
 
 class Product(ABC):
-    def __init__(self,product_id,name,price,stock):
+    def __init__(self,product_id: str,name: str,price: float,stock: int, supplier: Supplier):
         self.__product_id = product_id
         self.__name = name
         self.__price = price
         self.__stock = stock
+        self._supplier: Supplier = supplier
 
     def update_stock(self,quantity):
         self.__stock = quantity
@@ -35,13 +37,14 @@ class Product(ABC):
         }
 
 class PhysicalProduct(Product,CanBeShipped):
-    def __init__(self,product_id,name,price,stock,weight):
-        super().__init__(product_id, name,price,stock)
+    def __init__(self,product_id: str,name: str,price: float,stock: int,supplier: Supplier,weight: float):
+        super().__init__(product_id, name,price,stock,supplier)
         self.__weight = weight
 
     def display_information(self):
         super().display_information()
         print(f"Weight: {self.__weight}kg")
+        self._supplier.display_information()
 
     def to_dict(self):
             product = super().to_dict()
@@ -56,13 +59,14 @@ class PhysicalProduct(Product,CanBeShipped):
         return 1.5 * self.__weight
 
 class DigitalProduct(Product):
-    def __init__(self,product_id,name,price,stock,download_size):
-        super().__init__(product_id, name,price,stock)
+    def __init__(self,product_id: str,name: str,price: float,stock: int,supplier: Supplier,download_size: float):
+        super().__init__(product_id, name,price,stock,supplier)
         self.__download_size = download_size
 
     def display_information(self):
         super().display_information()
         print(f"Downloadable Size: {self.__download_size}MB")
+        self._supplier.display_information()
    
     def to_dict(self):
         product = super().to_dict()

@@ -1,5 +1,4 @@
 from product import Product , PhysicalProduct , DigitalProduct
-from supplier import Supplier
 
 class Inventory:
     def __init__(self):

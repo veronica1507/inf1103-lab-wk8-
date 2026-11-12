@@ -1,5 +1,5 @@
 import json
-from product import Product , PhysicalProduct , DigitalProduct
+from product import PhysicalProduct , DigitalProduct
 from inventory import Inventory
 
 
