@@ -9,20 +9,20 @@ class CanBeShipped(ABC):
 
 class Product(ABC):
     def __init__(self,product_id: str,name: str,price: float,stock: int, supplier: Supplier):
-        self.__product_id = product_id
-        self.__name = name
-        self.__price = price
-        self.__stock = stock
+        self._product_id = product_id
+        self._name = name
+        self._price = price
+        self._stock = stock
         self._supplier: Supplier = supplier
 
     def update_stock(self,quantity):
-        self.__stock = quantity
+        self._stock = quantity
 
     def get_product_id(self):
-        return self.__product_id
+        return self._product_id
 
     def display_information(self):
-        print (f" Product ID: {self.__product_id} \n Product Name: {self.__name} \n Price: {self.__price} \n Stock: {self.__stock}")
+        print (f" Product ID: {self._product_id} \n Product Name: {self._name} \n Price: {self._price} \n Stock: {self._stock}")
 
     @abstractmethod
     def get_fulfilment_info(self):
@@ -30,48 +30,48 @@ class Product(ABC):
     
     def to_dict(self):
         return {
-            "product_id": self.__product_id,
-            "name": self.__name,
-            "price": self.__price,
-            "stock": self.__stock
+            "product_id": self._product_id,
+            "name": self._name,
+            "price": self._price,
+            "stock": self._stock
         }
 
 class PhysicalProduct(Product,CanBeShipped):
     def __init__(self,product_id: str,name: str,price: float,stock: int,supplier: Supplier,weight: float):
         super().__init__(product_id, name,price,stock,supplier)
-        self.__weight = weight
+        self._weight = weight
 
     def display_information(self):
         super().display_information()
-        print(f"Weight: {self.__weight}kg")
+        print(f"Weight: {self._weight}kg")
         self._supplier.display_information()
 
     def to_dict(self):
             product = super().to_dict()
             product["type"] = "Physical"
-            product["weight"] = self.__weight
+            product["weight"] = self._weight
             return product
 
     def get_fulfilment_info(self):
         print("The product requires shipping.")
 
     def calculate_shipping_cost(self):
-        return 1.5 * self.__weight
+        return 1.5 * self._weight
 
 class DigitalProduct(Product):
     def __init__(self,product_id: str,name: str,price: float,stock: int,supplier: Supplier,download_size: float):
         super().__init__(product_id, name,price,stock,supplier)
-        self.__download_size = download_size
+        self._download_size = download_size
 
     def display_information(self):
         super().display_information()
-        print(f"Downloadable Size: {self.__download_size}MB")
+        print(f"Downloadable Size: {self._download_size}MB")
         self._supplier.display_information()
    
     def to_dict(self):
         product = super().to_dict()
         product["type"] = "Digital"
-        product["download_size"] = self.__download_size
+        product["download_size"] = self._download_size
         return product
 
     def get_fulfilment_info(self):
