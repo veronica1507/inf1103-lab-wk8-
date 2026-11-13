@@ -18,10 +18,19 @@ class Inventory:
         self._products.remove(p)
         
     def display_all (self):
+        print("Current Inventory")
+        print("-"*50)
+        if not self._products:
+            print("There are no items in the inventory")
+            return
         for product in self._products:
-            product.display_information()
-            product.get_fulfilment_info()
+            self.show_product_details(product)
             print("-"*28)
+
+    def show_product_details(self, product: Product):
+        product.display_information()
+        print(product.get_fulfilment_info)
+        product.supplier.display_information()
 
     def find_product(self,id: str) -> Product | None:
         for product in self._products:
@@ -30,6 +39,7 @@ class Inventory:
                 product.display_information()
                 return product
         return None
+
 
     def load_products(self,products: list[dict[str,str | float | int]], suppliers: list[Supplier]):
         for item in products:
