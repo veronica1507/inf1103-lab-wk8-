@@ -24,6 +24,10 @@ class Product(ABC):
     def display_information(self):
         print (f" Product ID: {self._product_id} \n Product Name: {self._name} \n Price: {self._price} \n Stock: {self._stock}")
 
+    @property
+    def supplier(self):
+        return self._supplier
+
     @abstractmethod
     def get_fulfilment_info(self):
         pass
