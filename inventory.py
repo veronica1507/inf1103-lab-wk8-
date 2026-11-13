@@ -6,9 +6,10 @@ class Inventory:
         self._products: list[Product] = []
 
     def add_product(self, product: Product) -> None:
-        p: Product | None = self.find_product(Product.id)
+        p: Product | None = self.find_product(product.get_product_id())
         if p is not None:
             print("Product ID already exists.")
+            return True
         self._products.append(product)
 
     def remove_product(self,product_id):
@@ -29,7 +30,7 @@ class Inventory:
 
     def show_product_details(self, product: Product):
         product.display_information()
-        print(product.get_fulfilment_info)
+        print(product.get_fulfilment_info())
         product.supplier.display_information()
 
     def find_product(self,id: str) -> Product | None:
@@ -38,7 +39,7 @@ class Inventory:
                 print ("Item Found")
                 product.display_information()
                 return product
-        return None
+
 
 
     def load_products(self,products: list[dict[str,str | float | int]], suppliers: list[Supplier]):
@@ -50,12 +51,13 @@ class Inventory:
                     break
                 if supplier is None:
                     print(f"Supplier with ID {item['supplier']} not found.")
+                    break
                 product_type = item.get("type")
                 if product_type == "Physical":
-                    self.add_product(PhysicalProduct(item["product_id"], item["name"], item["price"], item["stock"], item["weight"]))
+                    self.add_product(PhysicalProduct(item["product_id"], item["name"], item["price"], item["stock"], supplier, item["weight"]))
 
                 elif product_type == "Digital":
-                    self.add_product(DigitalProduct(item["product_id"], item["name"], item["price"], item["stock"], item["download_size"]))
+                    self.add_product(DigitalProduct(item["product_id"], item["name"], item["price"], item["stock"], supplier, item["download_size"]))
 
     def get_all_products_dict(self) -> dict[str,list[dict[str, str | float | int]]]:
         products: list[dict[str,str | float | int]] = []
