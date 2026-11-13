@@ -2,8 +2,8 @@ from product import Product
 
 class OrderLine():
     def __init__(self,product: Product,quantity: int):
-        self.__product: Product = product
-        self.__quanity = quantity
+        self.product: Product = product
+        self.quantity = quantity
 
     def calculate_subtotal(self) -> float:
-        return self.__product.price * self.__quanity
+        return self.product._price * self.quantity
