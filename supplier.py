@@ -4,5 +4,17 @@ class Supplier:
         self._name: str = name
         self._contact_email: str = contact_email
 
+    @property
+    def name(self) -> str:
+        return self._name
+
+    @property
+    def contact_email(self) -> str:
+        return self._contact_email
+
+    @property
+    def supplier_id(self) -> str:
+        return self._supplier_id
+
     def display_information(self):
         print (f"Supplier ID: {self._supplier_id} \n Supplier Name: {self._name} \n Contact Email: {self._contact_email}")

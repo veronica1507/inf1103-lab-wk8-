@@ -1,6 +1,7 @@
 import json
 from product import PhysicalProduct , DigitalProduct
 from inventory import Inventory
+from supplier import Supplier
 
 
 def menu():
@@ -9,21 +10,52 @@ def menu():
     print("2. Add Product")
     print("3. Update Stock")
     print("4. Search Product")
-    print("5. Save Inventory")
-    print("6. Exit")
+    print("5. Save Inventory and suppliers")
+    print("6. Add Supplies")
+    print("7. Exit")
 
-def load_inventory():
+def load_inventory(suppliers):
     my_inventory = Inventory()
     try:
         with open('inventory.json', 'r') as file:
            data = json.load(file)
            print("inventory.json found")
-           my_inventory.load_products(data)
+           my_inventory.load_products(data, suppliers)
            print("Inventory loaded successfully")
 
     except FileNotFoundError: 
         print("Warning: inventory.json not found. Returning empty inventory.")
     return my_inventory
+
+def load_suppliers():
+        suppliers: list[Supplier] = []
+        try:
+            with open("suppliers.json", "r") as file:
+                data = json.load(file)
+                print("suppliers.json found.")
+                for supplier_data in data["suppliers"]:
+                    supplier = Supplier(
+                        supplier_data["supplier_id"],
+                        supplier_data["name"],
+                        supplier_data["contact_email"],
+                )
+                suppliers.append(supplier)
+        except FileNotFoundError:
+            print("suppliers.json not found. Using blank supplier list.")
+        return suppliers
+
+def save_suppliers(suppliers: list[Supplier]):
+    suppliers_list: list[dict[str, str | float | int]] = []
+    for supplier in suppliers:
+        suppliers_list.append({
+            "supplier_id": supplier.supplier_id,
+            "name": supplier.name,
+            "contact_email": supplier.contact_email,
+        })
+    with open("suppliers.json", "w") as file:
+        suppliers_data = {"suppliers": suppliers_list}
+        json.dump(suppliers_data, file, indent=4)
+    print("Suppliers saved successfully to suppliers.json.")
 
 def save_inventory(inventory_obj):
     data = inventory_obj.get_all_products_dict()
@@ -39,9 +71,10 @@ print()
 menu()
 print()
 
-my_inventory = load_inventory()
+my_suppliers = load_suppliers()
+my_inventory = load_inventory(my_suppliers)
 option = int(input("Enter Option: "))
-while option != 6:
+while option != 7:
     if option == 1:
         my_inventory.display_all()
 
@@ -50,7 +83,16 @@ while option != 6:
         name = input ("Enter Product Name: ")
         price = float(input("Enter ther price of the product:"))
         stock = int(input("Enter the stock quantity of the product: "))
-        supplier = input("Enter the supplier name: ")
+        supplier_id = input("Enter the supplier ID: ")
+        supplier = None
+        for s in my_suppliers:
+            if s.supplier_id == supplier_id:
+                supplier = s
+                break
+        if supplier is None:
+            print("Supplier ID not found. Please add the supplier first.")
+            continue
+
         product_type = input("Enter the type of product ? (Physical/Digital): ")
         if product_type == "Physical":
             weight = float(input("Enter the weight of the product: "))
@@ -68,7 +110,7 @@ while option != 6:
         
     elif option == 3:
         id = input("Enter Product ID: ")
-        product_obj = my_inventory.search_product(id)
+        product_obj = my_inventory.find_product(id)
         if product_obj is not None:
             new_stock = int(input("What is the stock amount you will like to update to: "))
             product_obj.update_stock(new_stock)
@@ -78,11 +120,20 @@ while option != 6:
 
     elif option == 4:
         id = input("Enter Product ID you are searching for : ")
-        my_inventory.search_product(id)
+        my_inventory.find_product(id)
 
     elif option == 5:
+        print("Saving inventory and supliers....")
         save_inventory(my_inventory)
+        save_suppliers(my_suppliers)
 
+    elif option == 6:
+        supplier_id = input("Supplier ID: ")
+        supplier_name = input("Supplier Name: ")
+        supplier_email = input("Supplier Contact Email: ")
+        supplier = Supplier(supplier_id,supplier_name,supplier_email)
+        print("Supplier added successfully")
+        my_suppliers.append(supplier)
     else:
         print("Invalid option, Please choose between 1 and 6.")
     

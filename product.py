@@ -37,7 +37,8 @@ class Product(ABC):
             "product_id": self._product_id,
             "name": self._name,
             "price": self._price,
-            "stock": self._stock
+            "stock": self._stock,
+            "Supplier ID": self._supplier.supplier_id
         }
 
 class PhysicalProduct(Product,CanBeShipped):
