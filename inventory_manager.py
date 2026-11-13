@@ -20,7 +20,7 @@ def load_inventory(suppliers):
         with open('inventory.json', 'r') as file:
            data = json.load(file)
            print("inventory.json found")
-           my_inventory.load_products(data, suppliers)
+           my_inventory.load_products(data["products"], suppliers)
            print("Inventory loaded successfully")
 
     except FileNotFoundError: 
@@ -142,7 +142,9 @@ while option != 7:
     option = int(input("Enter Option: ")) 
     print()
 
-print("Saving inventory before exit....")
+print("Saving inventory and supplier lsit before exit....")
 save_inventory(my_inventory)
+save_suppliers(my_suppliers)
+
 print("Thank You for using Inventory Management System")
 print("Program terminated")
