@@ -50,10 +50,11 @@ while option != 6:
         name = input ("Enter Product Name: ")
         price = float(input("Enter ther price of the product:"))
         stock = int(input("Enter the stock quantity of the product: "))
+        supplier = input("Enter the supplier name: ")
         product_type = input("Enter the type of product ? (Physical/Digital): ")
         if product_type == "Physical":
             weight = float(input("Enter the weight of the product: "))
-            item = PhysicalProduct(id,name,price,stock,weight)
+            item = PhysicalProduct(id,name,price,stock,supplier,weight)
             cost = item.calculate_shipping_cost()
             print(f"Shipping Cost: {cost}")
             my_inventory.add_product(item)
@@ -61,7 +62,7 @@ while option != 6:
 
         else:
             size = float(input("Enter the size of the downloadable product in MB: "))
-            item = DigitalProduct(id,name,price,stock,size)
+            item = DigitalProduct(id,name,price,stock,supplier,size)
             my_inventory.add_product(item)
             print("Added product to inventory!")          
         
