@@ -1,5 +1,6 @@
 import json
-from product import PhysicalProduct , DigitalProduct
+from product import CanBeShipped
+from product_factory import ProductFactory
 from inventory import Inventory
 from supplier import Supplier
 
@@ -78,35 +79,32 @@ while option != 7:
     if option == 1:
         my_inventory.display_all()
 
-    elif option == 2:         
+    elif option == 2:
         id = input("Enter Product ID: ")
-        name = input ("Enter Product Name: ")
-        price = float(input("Enter ther price of the product:"))
+        name = input("Enter Product Name: ")
+        price = float(input("Enter the price of the product: "))
         stock = int(input("Enter the stock quantity of the product: "))
         supplier_id = input("Enter the supplier ID: ")
-        supplier = None
-        for s in my_suppliers:
-            if s.supplier_id == supplier_id:
-                supplier = s
-                break
+        supplier = next((s for s in my_suppliers if s.supplier_id == supplier_id), None)
+
         if supplier is None:
             print("Supplier ID not found. Please add the supplier first.")
-            continue
-
-        product_type = input("Enter the type of product ? (Physical/Digital): ")
-        if product_type == "Physical":
-            weight = float(input("Enter the weight of the product: "))
-            item = PhysicalProduct(id,name,price,stock,supplier,weight)
-            cost = item.calculate_shipping_cost()
-            print(f"Shipping Cost: {cost}")
-            my_inventory.add_product(item)
-            print("Added product to inventory!")
-
         else:
-            size = float(input("Enter the size of the downloadable product in MB: "))
-            item = DigitalProduct(id,name,price,stock,supplier,size)
-            my_inventory.add_product(item)
-            print("Added product to inventory!")          
+            product_type = input("Enter the type of product (Physical/Digital): ")
+            if product_type == "Physical":
+                extra = {"weight": float(input("Enter the weight of the product: "))}
+            elif product_type == "Digital":
+                extra = {"download_size": float(input("Enter the size of the downloadable product in MB: "))}
+            else:
+                extra = None
+                print("Invalid product type.")
+
+        if extra is not None:
+            item = ProductFactory.create(product_type, id, name, price, stock, supplier, **extra)
+            if isinstance(item, CanBeShipped):
+                print(f"Shipping Cost: {item.calculate_shipping_cost()}")
+            if my_inventory.add_product(item):
+                print("Added product to inventory!")       
         
     elif option == 3:
         id = input("Enter Product ID: ")
