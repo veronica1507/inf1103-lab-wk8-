@@ -6,12 +6,12 @@ class Inventory:
     def __init__(self):
         self._products: list[Product] = []
 
-    def add_product(self, product: Product) -> None:
-        p: Product | None = self.find_product(product.get_product_id())
-        if p is not None:
+    def add_product(self, product: Product) -> bool:
+        if self.find_product(product.get_product_id()) is not None:
             print("Product ID already exists.")
-            return True
+            return False
         self._products.append(product)
+        return True
 
     def remove_product(self,product_id):
         p: Product | None = self.find_product(product_id)
@@ -64,7 +64,7 @@ class Inventory:
                 print(f"Skipping product {item.get('product_id')}: {e}")
                 continue
             self.add_product(product)
-            
+
     def get_all_products_dict(self) -> dict[str,list[dict[str, str | float | int]]]:
         products: list[dict[str,str | float | int]] = []
         for product in self._products:

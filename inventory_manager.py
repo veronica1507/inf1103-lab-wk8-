@@ -4,6 +4,8 @@ from product import CanBeShipped
 from product_factory import ProductFactory
 from inventory import Inventory
 from supplier import Supplier
+from order import Order
+from discount import NoDiscount, PercentageDiscount, BulkDiscount, StudentDiscount
 
 def menu():
     print("--------MENU---------")
