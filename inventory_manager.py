@@ -4,7 +4,6 @@ from product_factory import ProductFactory
 from inventory import Inventory
 from supplier import Supplier
 
-
 def menu():
     print("--------MENU---------")
     print("1. Display All Products")
@@ -14,6 +13,18 @@ def menu():
     print("5. Save Inventory and suppliers")
     print("6. Add Supplies")
     print("7. Exit")
+
+def get_positive_float(prompt: str) -> float:
+    while True:
+        try:
+            value = float(input(prompt))
+        except ValueError:
+            print("Please enter a valid number, e.g. 12.50")
+            continue
+        if value <= 0:
+            print("Please enter a number greater than zero.")
+            continue
+        return value
 
 def load_inventory(suppliers):
     my_inventory = Inventory()
@@ -83,7 +94,7 @@ while option != 7:
         try:
             id = input("Enter Product ID: ")
             name = input("Enter Product Name: ")
-            price = float(input("Enter the price of the product: "))
+            price = get_positive_float("Enter the price of the product: ")
             stock = int(input("Enter the stock quantity of the product: "))
             supplier_id = input("Enter the supplier ID: ")
             supplier = next((s for s in my_suppliers if s.supplier_id == supplier_id), None)
@@ -93,9 +104,9 @@ while option != 7:
             else:
                 product_type = input("Enter the type of product (Physical/Digital): ")
                 if product_type == "Physical":
-                    extra = {"weight": float(input("Enter the weight of the product: "))}
+                    extra = {"weight": get_positive_float("Enter the weight of the product: ")}
                 elif product_type == "Digital":
-                    extra = {"download_size": float(input("Enter the size of the downloadable product in MB: "))}
+                    extra = {"download_size": get_positive_float("Enter the size of the downloadable product in MB: ")}
                 else:
                     extra = None
                     print("Invalid product type.")
