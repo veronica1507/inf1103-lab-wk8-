@@ -1,4 +1,5 @@
 import json
+import csv
 from product import CanBeShipped
 from product_factory import ProductFactory
 from inventory import Inventory
@@ -25,6 +26,34 @@ def get_positive_float(prompt: str) -> float:
             print("Please enter a number greater than zero.")
             continue
         return value
+    
+def load_products(path: str, inventory: Inventory, supplier: Supplier) -> None:
+    try:
+        file = open(path, newline="")
+    except FileNotFoundError:
+        print(f"Products file not found: {path}")
+    else:
+        with file:
+            reader = csv.reader(file)
+            next(reader, None)                      # skip the header row
+            loaded = 0
+            for line_number, row in enumerate(reader, start=2):
+                if not row:                         # ignore blank lines
+                    continue
+                try:
+                    product_type, product_id, name, price, stock = row
+                    product = ProductFactory.create(
+                        product_type, product_id, name,
+                        float(price), int(stock), supplier
+                    )
+                except ValueError as e:
+                    print(f"Skipping line {line_number}: {e}")
+                    continue
+                if inventory.add_product(product):  # False means duplicate ID
+                    loaded += 1
+        print(f"{loaded} products loaded.")
+    finally:
+        print("Load attempt finished.")
 
 def load_inventory(suppliers):
     my_inventory = Inventory()

@@ -17,7 +17,7 @@ class ProductFactory:
           Physical -> weight=<float>
           Digital  -> download_size=<float>
         """
-        product_class = ProductFactory._product_types.get(product_type)
+        product_class = ProductFactory._product_types.get(product_type.strip().capitalize())
         if product_class is None:
             raise ValueError(f"Unknown product type: '{product_type}'")
         return product_class(product_id, name, price, stock, supplier, **extra)
