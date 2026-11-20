@@ -1,5 +1,6 @@
 from product import Product , PhysicalProduct , DigitalProduct
 from supplier import Supplier
+from product_factory import ProductFactory
 
 class Inventory:
     def __init__(self):
@@ -40,25 +41,30 @@ class Inventory:
                 product.display_information()
                 return product
 
-
-
-    def load_products(self,products: list[dict[str,str | float | int]], suppliers: list[Supplier]):
+    def load_products(self, products: list[dict[str, str | float | int]], suppliers: list[Supplier]):
+        common_keys = {"product_id", "name", "price", "stock", "supplier", "type"}
         for item in products:
             supplier = None
             for s in suppliers:
                 if s.supplier_id == item["supplier"]:
                     supplier = s
                     break
-                if supplier is None:
-                    print(f"Supplier with ID {item['supplier']} not found.")
-                    break
-                product_type = item.get("type")
-                if product_type == "Physical":
-                    self.add_product(PhysicalProduct(item["product_id"], item["name"], item["price"], item["stock"], supplier, item["weight"]))
 
-                elif product_type == "Digital":
-                    self.add_product(DigitalProduct(item["product_id"], item["name"], item["price"], item["stock"], supplier, item["download_size"]))
+            if supplier is None:
+                print(f"Supplier with ID {item['supplier']} not found.")
+                continue
 
+            extra = {k: v for k, v in item.items() if k not in common_keys}
+            try:
+                product = ProductFactory.create(
+                    item.get("type"), item["product_id"], item["name"],
+                    item["price"], item["stock"], supplier, **extra
+            )
+            except (ValueError, TypeError) as e:
+                print(f"Skipping product {item.get('product_id')}: {e}")
+                continue
+            self.add_product(product)
+            
     def get_all_products_dict(self) -> dict[str,list[dict[str, str | float | int]]]:
         products: list[dict[str,str | float | int]] = []
         for product in self._products:
