@@ -12,10 +12,13 @@ class Product(ABC):
         self._product_id = product_id
         self._name = name
         self._price = price
-        self._stock = stock
+        self._stock = 0
+        self.update_stock(stock)
         self._supplier: Supplier = supplier
 
     def update_stock(self,quantity):
+        if quantity < 0:
+            raise ValueError("Stock quantity cannot be negative.")
         self._stock = quantity
 
     def get_product_id(self):

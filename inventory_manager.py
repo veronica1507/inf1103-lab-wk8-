@@ -80,39 +80,45 @@ while option != 7:
         my_inventory.display_all()
 
     elif option == 2:
-        id = input("Enter Product ID: ")
-        name = input("Enter Product Name: ")
-        price = float(input("Enter the price of the product: "))
-        stock = int(input("Enter the stock quantity of the product: "))
-        supplier_id = input("Enter the supplier ID: ")
-        supplier = next((s for s in my_suppliers if s.supplier_id == supplier_id), None)
+        try:
+            id = input("Enter Product ID: ")
+            name = input("Enter Product Name: ")
+            price = float(input("Enter the price of the product: "))
+            stock = int(input("Enter the stock quantity of the product: "))
+            supplier_id = input("Enter the supplier ID: ")
+            supplier = next((s for s in my_suppliers if s.supplier_id == supplier_id), None)
 
-        if supplier is None:
-            print("Supplier ID not found. Please add the supplier first.")
-        else:
-            product_type = input("Enter the type of product (Physical/Digital): ")
-            if product_type == "Physical":
-                extra = {"weight": float(input("Enter the weight of the product: "))}
-            elif product_type == "Digital":
-                extra = {"download_size": float(input("Enter the size of the downloadable product in MB: "))}
+            if supplier is None:
+                print("Supplier ID not found. Please add the supplier first.")
             else:
-                extra = None
-                print("Invalid product type.")
+                product_type = input("Enter the type of product (Physical/Digital): ")
+                if product_type == "Physical":
+                    extra = {"weight": float(input("Enter the weight of the product: "))}
+                elif product_type == "Digital":
+                    extra = {"download_size": float(input("Enter the size of the downloadable product in MB: "))}
+                else:
+                    extra = None
+                    print("Invalid product type.")
 
-        if extra is not None:
-            item = ProductFactory.create(product_type, id, name, price, stock, supplier, **extra)
-            if isinstance(item, CanBeShipped):
-                print(f"Shipping Cost: {item.calculate_shipping_cost()}")
-            if my_inventory.add_product(item):
-                print("Added product to inventory!")       
-        
+                if extra is not None:
+                    item = ProductFactory.create(product_type, id, name, price, stock, supplier, **extra)
+                if isinstance(item, CanBeShipped):
+                    print(f"Shipping Cost: {item.calculate_shipping_cost()}")
+                if my_inventory.add_product(item):
+                    print("Added product to inventory!")       
+        except ValueError as e:
+            print(f"Could not add product: {e}")
+
     elif option == 3:
         id = input("Enter Product ID: ")
         product_obj = my_inventory.find_product(id)
         if product_obj is not None:
-            new_stock = int(input("What is the stock amount you will like to update to: "))
-            product_obj.update_stock(new_stock)
-            print("Stock updated successfully!")
+            try:
+                new_stock = int(input("What is the stock amount you will like to update to: "))
+                product_obj.update_stock(new_stock)
+                print("Stock updated successfully!")
+            except ValueError as e:
+                print(f"Stock not updated: {e}")
         else:
             print("Product ID not found")
 
